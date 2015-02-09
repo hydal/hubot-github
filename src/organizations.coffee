@@ -121,12 +121,11 @@ module.exports = (robot) ->
   robot.respond /gho list teams/i, (msg) ->
     getOrgTeams msg, process.env.HUBOT_GITHUB_ORG
 
-  robot.respond /gho create team (\w+)/i, (msg) ->
-
-    createOrgTeam msg, process.env.HUBOT_GITHUB_ORG
+  # robot.respond /gho create team (\w+)/i, (msg) ->
+  #   createOrgTeam msg, process.env.HUBOT_GITHUB_ORG
 
   # Org.Repos
-  robot.respond /gho list repos/i, (msg) ->
+  robot.respond /gho list (repos|repositories)/i, (msg) ->
     getOrgRepos msg, process.env.HUBOT_GITHUB_ORG, "all"
 
 
