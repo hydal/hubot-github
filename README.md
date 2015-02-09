@@ -26,6 +26,6 @@ Then add **hubot-github** to your `external-scripts.json`:
 ```
 HUBOT_GITHUB_KEY   - Github Application Key
 HUBOT_GITHUB_ORG  - Github Organization Name
-HUBOT_SLACK_ADMIN - Slack Admins who can use this command
+HUBOT_SLACK_ADMIN - Slack Admins who can use certain admin commands
 ```
 
