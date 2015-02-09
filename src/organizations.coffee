@@ -1,5 +1,5 @@
 # Description:
-#   Say Hi to Hubot.
+#   Allow Hubot to manage your github organization members and teams
 #
 # Dependencies:
 #   "github": "latest"
@@ -10,7 +10,7 @@
 #   HUBOT_SLACK_ADMIN - Userid of slack admins who can use these commands
 #
 # Commands:
-#   hubot org list members|users
+#   hubot gho list members|users - returns a list of all of the users and members of your org
 #
 # Author:
 #   Ollie Jennings <ollie@olliejennings.co.uk>
@@ -40,6 +40,29 @@ ensureConfig = (out) ->
 
 isAdmin = (user) ->
   user.id.toString() in admins
+
+getOrgDetails = (msg, orgName) ->
+  ensureConfig msg.send
+  github.orgs.get org: orgName, per_page: 100, (err, org) ->
+    github.orgs.getMembers org: orgName, per_page: 100, (errr, members) ->
+      github.orgs.getTeams org: orgName, per_page: 100, (errrr, teams) ->
+        if err or errr or errrr
+          msg.reply "There was an error getting the details of the organization: #{orgName}"
+        else
+          msg.send "<#{org.html_url}|#{org.name}>"
+          msg.send " * Location: #{org.location}"
+          msg.send " * Created: #{org.created_at}"
+          msg.send " * Public Repos: #{org.public_repos}"
+          msg.send " * Private Repos: #{org.total_private_repos}"
+          msg.send " * Total Repos: #{org.public_repos + org.total_private_repos}"
+          msg.send " * Members: <#{org.html_url}/people|#{members.length}>"
+          msg.send " * Teams: <#{org.html_url}/teams|#{teams.length}>"
+          msg.send " * Collaborators: #{org.collaborators}"
+          msg.send " * Followers: #{org.followers}"
+          msg.send " * Following: #{org.following}"
+          msg.send " * Public Gists: #{org.public_gists}"
+          msg.send " * Private Gists: #{org.private_gists}"
+
 
 getOrgMembers = (msg, orgName) ->
   ensureConfig msg.send
@@ -76,16 +99,34 @@ module.exports = (robot) ->
 
   github.authenticate type: "oauth", token: process.env.HUBOT_GITHUB_KEY
 
-  robot.respond /org list (members|users)/i, (msg) ->
-    getOrgMembers msg, process.env.HUBOT_GITHUB_ORG
 
-  robot.respond /org check (member|user) (\w+)/i, (msg) ->
+  # Org
+  robot.respond /gho/i, (msg) ->
+    getOrgDetails msg, process.env.HUBOT_GITHUB_ORG
+
+
+  # Org.Members
+  robot.respond /gho list (members|users)/i, (msg) ->
+    unless isAdmin msg.message.user
+      msg.reply "Sorry, only admins can use this command."
+    else
+      getOrgMembers msg, process.env.HUBOT_GITHUB_ORG
+
+
+  robot.respond /gho check (member|user) (\w+)/i, (msg) ->
     getOrgMember msg, msg.match[2], process.env.HUBOT_GITHUB_ORG
 
-  robot.respond /org list teams/i, (msg) ->
+
+  # Org.Teams
+  robot.respond /gho list teams/i, (msg) ->
     getOrgTeams msg, process.env.HUBOT_GITHUB_ORG
 
-  robot.respond /org list repos/i, (msg) ->
+  robot.respond /gho create team (\w+)/i, (msg) ->
+
+    createOrgTeam msg, process.env.HUBOT_GITHUB_ORG
+
+  # Org.Repos
+  robot.respond /gho list repos/i, (msg) ->
     getOrgRepos msg, process.env.HUBOT_GITHUB_ORG, "all"
 
 

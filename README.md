@@ -37,6 +37,8 @@ HUBOT_SLACK_ADMIN - Slack Admins who can use certain admin commands
 
 ## Commands to be Implemented
 
+These are following the API spec set out by [node-github](http://mikedeboer.github.io/node-github/):
+
 * Full Pull Requests API
 * Full Repositories API
 * Full Users API
