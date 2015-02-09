@@ -1,19 +1,20 @@
 {
-  "name": "hubot-github-org",
-  "description": "An example script package for Hubot",
+  "name": "hubot-github",
+  "description": "Giving Hubot the ability to be a vital member of your github organization",
   "version": "1.0.0",
-  "author": "Tom Bell <tomb@tomb.io>",
+  "author": "Ollie Jennings <ollie@olliejennings.co.uk>",
   "license": "MIT",
   "keywords": [
     "hubot",
-    "hubot-scripts"
+    "hubot-scripts",
+    "hubot-github"
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/hubot-scripts/hubot-example.git"
+    "url": "git://github.com/mmtus/hubot-github.git"
   },
   "bugs": {
-    "url": "https://github.com/hubot-scripts/hubot-example/issues"
+    "url": "https://github.com/mmtus/hubot-github/issues"
   },
   "dependencies": {
     "coffee-script": "~1.6",
