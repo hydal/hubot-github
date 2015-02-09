@@ -1,18 +1,22 @@
-# Hubot Github Organization
+# Hubot Github
 
 Give Hubot the ability to take control of you're Github Organization
+
+`Please don't install this yet, it's still a work in progress, and this package is not on NPM yet.`
+
+
 
 ## Installation
 
 In hubot project repository, run:
 
-`npm install hubot-github-org --save`
+`npm install hubot-github --save`
 
-Then add **hubot-github-org** to your `external-scripts.json`:
+Then add **hubot-github** to your `external-scripts.json`:
 
 ```json
 [
-  "hubot-github-org"
+  "hubot-github"
 ]
 ```
 
@@ -25,17 +29,3 @@ HUBOT_GITHUB_ORG  - Github Organization Name
 HUBOT_SLACK_ADMIN - Slack Admins who can use this command
 ```
 
-
-### test
-
-This directory is home to any tests you write for your scripts. This example
-package uses Mocha, Chai and Sinon to manage writing tests.
-
-## Advantages of Building a Package
-
-Some of the advantages of building an npm package for your hubot script(s) are:
-
-* You don't need to rely on when hubot-scripts package is released.
-* You can specify dependencies in the `package.json` rather than have users
-  manually specify them
-* You can easily add tests using your favourite frameworks and libraries
