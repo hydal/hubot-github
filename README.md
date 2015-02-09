@@ -51,6 +51,8 @@ These are following the API spec set out by [node-github](http://mikedeboer.gith
 
 ## Commands
 
+Organization commands, hence gho (GitHub Organization)
+
 `hubot`:
 
 * `gho` - returns a summary of your organization
