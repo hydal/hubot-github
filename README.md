@@ -56,7 +56,7 @@ Organization commands, hence gho (GitHub Organization)
 `hubot`:
 
 * `gho` - returns a summary of your organization
-* `gho list (members|users)` - returns a list of all members of your organization
+* `gho list (members|users)` - returns a list of the members of your organization
 * `gho list teams` - returns a list of all teams within your organization
 * `gho list (repos|repositories)` - returns a list of all repos within your organization
 * `gho check (member|user) <github-username>` - tells you if the github user is a member of your organizaton
