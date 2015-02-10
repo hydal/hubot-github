@@ -39,6 +39,7 @@ ensureConfig = (out) ->
 ##############################
 
 isAdmin = (user) ->
+  console.log admins, user
   user.id.toString() in admins
 
 getOrgDetails = (msg, orgName) ->
@@ -84,6 +85,19 @@ getOrgTeams = (msg, orgName) ->
     msg.reply "There was an error getting the teams for organization: #{orgName}" if err
     msg.send "* <https://github.com/org/#{orgName}/teams/#{team.name}|#{team.name}> - #{team.description}" for team in res unless err and res.length == 0
 
+
+createOrgTeam = (msg, orgName, teamName, permis="push") ->
+  ensureConfig msg.send
+  github.orgs.createTeam org: orgName, name: teamName, permission: permis, (err, res) ->
+    msg.reply "There was an error creating the team #{teamName} for the organization: #{orgName}" if err
+    msg.send "Successfully created the team: '#{res.name}' with '#{res.permission}' permissions" unless err
+
+
+createOrgTeamWithRepos = (msg, orgName, teamName, repos, permis="push") ->
+  ensureConfig msg.send
+  console.log repos
+
+
 getOrgRepos = (msg, orgName, repoType) ->
   ensureConfig msg.send
   github.repos.getFromOrg org: orgName, type: repoType, per_page: 100, (err, res) ->
@@ -101,7 +115,7 @@ module.exports = (robot) ->
 
 
   # Org
-  robot.respond /gho/i, (msg) ->
+  robot.respond /gho$/i, (msg) ->
     getOrgDetails msg, process.env.HUBOT_GITHUB_ORG
 
 
@@ -121,17 +135,23 @@ module.exports = (robot) ->
   robot.respond /gho list teams/i, (msg) ->
     getOrgTeams msg, process.env.HUBOT_GITHUB_ORG
 
-  # robot.respond /gho create team (\w+)/i, (msg) ->
-  #   createOrgTeam msg, process.env.HUBOT_GITHUB_ORG
+  robot.respond /gho create team ["'](.+)["']$/i, (msg) ->
+    unless isAdmin msg.message.user
+      msg.reply "Sorry, only admins can use this github organization command"
+    else
+      createOrgTeam msg, process.env.HUBOT_GITHUB_ORG, msg.match[1]
+
+  # robot.respond /gho create team ["'](.+)["'] with (users|user|repo|repos) ["'](.+)["'] (and|plus|&) (repo|repos|user|users|member|members) ["'](.+)["']/i, (msg) ->
+
+  # problems with regex matching here
+  # robot.respond /gho create team ["'](.+)["'] with repos ["'](.+)["']$/i, (msg) ->
+  #   unless isAdmin msg.message.user
+  #     msg.reply "Sorry, only admins can use this github organization command"
+  #   else
+  #     createOrgTeamWithRepos msg, process.env.HUBOT_GITHUB_ORG, msg.match[1], msg.match[2]
+
 
   # Org.Repos
   robot.respond /gho list (repos|repositories)/i, (msg) ->
     getOrgRepos msg, process.env.HUBOT_GITHUB_ORG, "all"
 
-
-
-  robot.respond /hello/, (msg) ->
-    unless isAdmin msg.message.user
-      msg.reply "Sorry, only admins use github organization commands."
-    else
-      msg.reply "hello!"
