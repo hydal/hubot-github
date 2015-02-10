@@ -23,6 +23,14 @@ github = new GithubiApi version: "3.0.0", debug: true, headers: Accept: "applica
 admins = []
 
 
+# TODO - ideal commands
+# - base
+# - create (team|repo) with (extras)
+# - list (teams|members|repos) of (extra)
+# - move (member|members|repos|repo) (to|from) (team) to (team)
+# - remove (member|team) from (team|organization)
+
+
 
 # verify that all the environment vars are available
 ensureConfig = (out) ->
