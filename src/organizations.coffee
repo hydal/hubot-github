@@ -125,9 +125,9 @@ module.exports = (robot) ->
     org.summary msg
 
 
-  robot.respond /gho create (team|repo) ["'](.*?)['"](?:[:])?(?:["'](.*?)['"])?/i, (msg) ->
+  robot.respond /gho create (team|repo) ["'](.*?)['"](?:[:])?(?:["'](.*?)['"])?(?:[:])?(?:["'](.*?)['"])?/i, (msg) ->
     console.log msg.match
-    org.create[msg.match[1]] msg, msg.match[2], msg.match[3]
+    org.create[msg.match[1]] msg, msg.match[2], msg.match[3], msg.match[4]
 
 
 

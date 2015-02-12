@@ -40,7 +40,11 @@ org = {
         msg.reply "There was an error and the team: #{teamName} was not created" if err
         msg.send "The team: #{team.name} was successfully created" unless err
 
-    repo: (msg, repoName, repoDesc) ->
+    repo: (msg, repoName, repoDesc, repoStatus) ->
+      github.repos.createFromOrg org: organization, name: repoName, description: repoDesc, private: repoStatus == "private", (err, repo) ->
+        msg.reply "There was an error, and the repo: #{repoName} was not created" if err
+        msg.send "The private repo: #{repo.name} was created" unless err or !repo.private
+        msg.send "The public repo: #{repo.name} was created" unless err or repo.private
   }
 
   remove: {}
