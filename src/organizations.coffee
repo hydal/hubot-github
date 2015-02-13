@@ -1,4 +1,4 @@
-# Description:
+ # Description:
 #   Allow Hubot to manage your github organization members and teams
 #
 # Dependencies:
@@ -21,9 +21,7 @@ admins = []
 
 # TODO - ideal commands
 # - createThin layer for parsing commands
-# - create (team|repo) with (extras)
 # - add (members|repos) to (team|organization)
-# - list (teams|members|repos) of (extra)
 # - move (member|members|repos|repo) (to|from) (team) to (team)
 # - remove (member|team) from (team|organization)
 
@@ -43,12 +41,6 @@ ensureConfig = (out) ->
   return false unless (process.env.HUBOT_GITHUB_KEY and process.env.HUBOT_GITHUB_ORG and process.env.HUBOT_SLACK_ADMIN)
   true
 
-getOrgMembers = (msg, orgName) ->
-  ensureConfig msg.send
-  github.orgs.getMembers org: orgName, per_page: 100, (err, res) ->
-    msg.reply "There was an error getting the members for organization: #{orgName}" if err
-    msg.send "* <#{user.url}|#{user.login}>" for user in res unless err and res.length == 0
-
 
 getOrgMember = (msg, username, orgName) ->
   ensureConfig msg.send
@@ -57,30 +49,6 @@ getOrgMember = (msg, username, orgName) ->
     msg.send "#{username} is part of the organization: #{orgName}" unless err
 
 
-getOrgTeams = (msg, orgName) ->
-  ensureConfig msg.send
-  github.orgs.getTeams org: orgName, per_page: 100, (err, res) ->
-    msg.reply "There was an error getting the teams for organization: #{orgName}" if err
-    msg.send "* <https://github.com/org/#{orgName}/teams/#{team.name}|#{team.name}> - #{team.description}" for team in res unless err and res.length == 0
-
-
-createOrgTeam = (msg, orgName, teamName, permis="push") ->
-  ensureConfig msg.send
-  github.orgs.createTeam org: orgName, name: teamName, permission: permis, (err, res) ->
-    msg.reply "There was an error creating the team #{teamName} for the organization: #{orgName}" if err
-    msg.send "Successfully created the team: '#{res.name}' with '#{res.permission}' permissions" unless err
-
-
-createOrgTeamWithRepos = (msg, orgName, teamName, repos, permis="push") ->
-  ensureConfig msg.send
-  console.log repos
-
-
-getOrgRepos = (msg, orgName, repoType) ->
-  ensureConfig msg.send
-  github.repos.getFromOrg org: orgName, type: repoType, per_page: 100, (err, res) ->
-    msg.reply "There was an error getting all repos for organization: #{orgName}" if err
-    msg.send "*<#{repo.html_url}|#{repo.name}> - #{repo.description}" for repo in res unless err and res.length == 0
 
 
 # org = {
@@ -89,19 +57,6 @@ getOrgRepos = (msg, orgName, repoType) ->
 
 #   summary: (msg) ->
 #     # get org summary
-
-#   list: {
-#     teams: (msg) ->
-#     members: (msg) ->
-#     repos: (msg) ->
-#   }
-
-#   # create: {
-#   #   team: (msg, name) ->
-#   #   teams: (msg, names) ->
-#   #   repo: (msg, name) ->
-#   #   repo: (msg, names) ->
-#   # }
 
 #   # remove: {
 #   #   member: (msg, name, from) ->
@@ -126,9 +81,11 @@ module.exports = (robot) ->
 
 
   robot.respond /gho create (team|repo) ["'](.*?)['"](?:[:])?(?:["'](.*?)['"])?(?:[:])?(?:["'](.*?)['"])?/i, (msg) ->
-    console.log msg.match
     org.create[msg.match[1]] msg, msg.match[2], msg.match[3], msg.match[4]
 
+
+  robot.respond /gho list (teams|repos|members)\s?(?:["'](.*?)['"])?/i, (msg) ->
+    org.list[msg.match[1]] msg, msg.match[2]
 
 
   # robot.respond /gho list (teams|members|repos)/i, (msg) ->
