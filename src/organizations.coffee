@@ -22,7 +22,6 @@ admins = []
 # TODO - ideal commands
 # - createThin layer for parsing commands
 # - add (members|repos) to (team|organization)
-# - list (teams|members|repos) of (extra)
 # - move (member|members|repos|repo) (to|from) (team) to (team)
 # - remove (member|team) from (team|organization)
 
@@ -42,12 +41,6 @@ ensureConfig = (out) ->
   return false unless (process.env.HUBOT_GITHUB_KEY and process.env.HUBOT_GITHUB_ORG and process.env.HUBOT_SLACK_ADMIN)
   true
 
-getOrgMembers = (msg, orgName) ->
-  ensureConfig msg.send
-  github.orgs.getMembers org: orgName, per_page: 100, (err, res) ->
-    msg.reply "There was an error getting the members for organization: #{orgName}" if err
-    msg.send "* <#{user.url}|#{user.login}>" for user in res unless err and res.length == 0
-
 
 getOrgMember = (msg, username, orgName) ->
   ensureConfig msg.send
@@ -56,19 +49,6 @@ getOrgMember = (msg, username, orgName) ->
     msg.send "#{username} is part of the organization: #{orgName}" unless err
 
 
-getOrgTeams = (msg, orgName) ->
-  ensureConfig msg.send
-  github.orgs.getTeams org: orgName, per_page: 100, (err, res) ->
-    msg.reply "There was an error getting the teams for organization: #{orgName}" if err
-    msg.send "* <https://github.com/org/#{orgName}/teams/#{team.name}|#{team.name}> - #{team.description}" for team in res unless err and res.length == 0
-
-
-
-getOrgRepos = (msg, orgName, repoType) ->
-  ensureConfig msg.send
-  github.repos.getFromOrg org: orgName, type: repoType, per_page: 100, (err, res) ->
-    msg.reply "There was an error getting all repos for organization: #{orgName}" if err
-    msg.send "*<#{repo.html_url}|#{repo.name}> - #{repo.description}" for repo in res unless err and res.length == 0
 
 
 # org = {
@@ -77,12 +57,6 @@ getOrgRepos = (msg, orgName, repoType) ->
 
 #   summary: (msg) ->
 #     # get org summary
-
-#   list: {
-#     teams: (msg) ->
-#     members: (msg) ->
-#     repos: (msg) ->
-#   }
 
 #   # remove: {
 #   #   member: (msg, name, from) ->
