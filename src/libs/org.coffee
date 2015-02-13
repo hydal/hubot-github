@@ -32,7 +32,22 @@ org = {
             msg.send " * Public Gists: #{org.public_gists}"
             msg.send " * Private Gists: #{org.private_gists}"
 
-  list: {}
+  list: {
+    teams: (msg) ->
+      github.orgs.getTeams org: organization, per_page: 100, (err, res) ->
+        msg.reply "There was an error fetching the teams for the organization: #{organization}" if err
+        msg.send "* <https://github.com/org/#{organization}/teams/#{team.name}|#{team.name}> - #{team.description}" for team in res unless err and res.length == 0
+
+    members: (msg, teamName) ->
+      github.orgs.getMembers org: organization, per_page: 100, (err, res) ->
+        msg.reply "There was an error fetching the memebers for the organization:#{organization}" if err
+        msg.send "* <#{user.url}|#{user.login}>" for user in res unless err and res.length == 0
+
+    repos: (msg, repoType="all") ->
+      github.repos.getFromOrg org: organization, type: repoType, per_page: 100, (err, res) ->
+        msg.reply "There was an error fetching all the repos for the organization: #{organization}" if err
+        msg.send "*<#{repo.html_url}|#{repo.name}> - #{repo.description}" for repo in res unless err and res.length == 0
+  }
 
   create: {
     team: (msg, teamName) ->

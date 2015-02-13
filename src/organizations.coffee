@@ -1,4 +1,4 @@
-# Description:
+ # Description:
 #   Allow Hubot to manage your github organization members and teams
 #
 # Dependencies:
@@ -21,7 +21,6 @@ admins = []
 
 # TODO - ideal commands
 # - createThin layer for parsing commands
-# - create (team|repo) with (extras)
 # - add (members|repos) to (team|organization)
 # - list (teams|members|repos) of (extra)
 # - move (member|members|repos|repo) (to|from) (team) to (team)
@@ -64,17 +63,6 @@ getOrgTeams = (msg, orgName) ->
     msg.send "* <https://github.com/org/#{orgName}/teams/#{team.name}|#{team.name}> - #{team.description}" for team in res unless err and res.length == 0
 
 
-createOrgTeam = (msg, orgName, teamName, permis="push") ->
-  ensureConfig msg.send
-  github.orgs.createTeam org: orgName, name: teamName, permission: permis, (err, res) ->
-    msg.reply "There was an error creating the team #{teamName} for the organization: #{orgName}" if err
-    msg.send "Successfully created the team: '#{res.name}' with '#{res.permission}' permissions" unless err
-
-
-createOrgTeamWithRepos = (msg, orgName, teamName, repos, permis="push") ->
-  ensureConfig msg.send
-  console.log repos
-
 
 getOrgRepos = (msg, orgName, repoType) ->
   ensureConfig msg.send
@@ -95,13 +83,6 @@ getOrgRepos = (msg, orgName, repoType) ->
 #     members: (msg) ->
 #     repos: (msg) ->
 #   }
-
-#   # create: {
-#   #   team: (msg, name) ->
-#   #   teams: (msg, names) ->
-#   #   repo: (msg, name) ->
-#   #   repo: (msg, names) ->
-#   # }
 
 #   # remove: {
 #   #   member: (msg, name, from) ->
@@ -126,9 +107,11 @@ module.exports = (robot) ->
 
 
   robot.respond /gho create (team|repo) ["'](.*?)['"](?:[:])?(?:["'](.*?)['"])?(?:[:])?(?:["'](.*?)['"])?/i, (msg) ->
-    console.log msg.match
     org.create[msg.match[1]] msg, msg.match[2], msg.match[3], msg.match[4]
 
+
+  robot.respond /gho list (teams|repos|members)\s?(?:["'](.*?)['"])?/i, (msg) ->
+    org.list[msg.match[1]] msg, msg.match[2]
 
 
   # robot.respond /gho list (teams|members|repos)/i, (msg) ->
