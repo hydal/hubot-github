@@ -2,7 +2,7 @@
 
 `Please don't install this yet, it's still a work in progress, and this package is not on NPM yet.`
 
-Give Hubot the ability to take control of you're Github Organization
+Give Hubot the ability to take control of Github 
 
 
 Please contribute, espically on things like:
@@ -10,6 +10,9 @@ Please contribute, espically on things like:
 * If you think the commands can be better setup
 * If you think the code could be organized in a better fashion
 * And everything else!
+
+
+## Suggested Setup
 
 
 ## Installation
@@ -56,7 +59,6 @@ Organization commands, hence gho (GitHub Organization)
 `hubot`:
 
 * `gho` - returns a summary of your organization
-* `gho list (members|users)` - returns a list of the members of your organization
-* `gho list teams` - returns a list of all teams within your organization
-* `gho list (repos|repositories)` - returns a list of all repos within your organization
-* `gho check (member|user) <github-username>` - tells you if the github user is a member of your organizaton
+* `gho list (teams|repos|members)` - returns a list of the members, teams or repos in your organization
+* `gho create team "<team name>"` - creates a team with the following name
+* `gho create repo "<repo name>":"<repo desc>":"<private | public>" - creates a repo with the following name, description and type (public or private)
