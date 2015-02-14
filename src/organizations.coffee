@@ -55,9 +55,6 @@ getOrgMember = (msg, username, orgName) ->
 #   isAdmin: (user) ->
 #     user.id.toString() in admins
 
-#   summary: (msg) ->
-#     # get org summary
-
 #   # remove: {
 #   #   member: (msg, name, from) ->
 #   #   members: (msg, names, from) ->
@@ -81,20 +78,11 @@ module.exports = (robot) ->
 
 
   robot.respond /gho create (team|repo) ["'](.*?)['"](?:[:])?(?:["'](.*?)['"])?(?:[:])?(?:["'](.*?)['"])?/i, (msg) ->
-    org.create[msg.match[1]] msg, msg.match[2], msg.match[3], msg.match[4]
+    unless isAdmin msg.message.user
+      msg.reply "Sorry, only admins can use 'create' commands"
+    else
+      org.create[msg.match[1]] msg, msg.match[2], msg.match[3], msg.match[4]
 
 
   robot.respond /gho list (teams|repos|members)\s?(?:["'](.*?)['"])?/i, (msg) ->
     org.list[msg.match[1]] msg, msg.match[2]
-
-
-  # robot.respond /gho list (teams|members|repos)/i, (msg) ->
-  #   console.log msg.match
-  #   # org.list[msg.match[1]] msg
-
-  # robot.respond /gho create (team|repo) ["'](.+)["']/i, (msg) ->
-  #   unless org.isAdmin msg.message.user
-  #     msg.reply "Sorry, only admins can use the github organization create commands"
-  #   else
-  #     console.log msg.match
-      # org.create[msg.match[1]] msg msg.match[2]
