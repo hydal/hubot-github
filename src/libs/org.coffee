@@ -62,6 +62,28 @@ org = {
         msg.send "The public repo: #{repo.name} was created" unless err or repo.private
   }
 
+  add: {
+    repos: (msg, repoList, teamName) ->
+      github.orgs.getTeams org: organization, per_page: 100, (err, res) ->
+        msg.reply "There was an error adding the repos: #{repoList} to the team: #{teamName}" if err or res.length == 0
+        for team in res
+          if team.name == teamName
+            for repository in repoList.split ','
+              github.orgs.addTeamRepo id: team.id, user: organization, repo: repository, (err, res) ->
+                msg.reply "The repo: #{repository} could not be added to the team: #{team.name}" if err
+                msg.send "The repo: #{repository} was added to the team: #{team.name}" unless err
+
+    members: (msg, memberList, teamName) ->
+      github.orgs.getTeams org: organization, per_page: 100, (err, res) ->
+        msg.reply "There was an error adding the members: #{memberList} to the team: #{teamName}" if err or res.length == 0
+        for team in res
+          if team.name == teamName
+            for member in memberList.split ','
+              github.orgs.addTeamMember id: team.id, user: member, (err, res) ->
+                msg.reply "The member: #{member} could not be added to the team: #{team.name}" if err
+                msg.send "The member: #{member} was added to the team: #{team.name}" unless err
+  }
+
   remove: {}
 
   delete: {}
