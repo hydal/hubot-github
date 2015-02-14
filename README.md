@@ -2,7 +2,7 @@
 
 `Please don't install this yet, it's still a work in progress, and this package is not on NPM yet.`
 
-Give Hubot the ability to take control of you're Github Organization
+Give Hubot the ability to take control of Github 
 
 
 Please contribute, espically on things like:
@@ -10,6 +10,14 @@ Please contribute, espically on things like:
 * If you think the commands can be better setup
 * If you think the code could be organized in a better fashion
 * And everything else!
+
+
+## Suggested Setup
+
+If you just wanted to use this hubot-script without having to create a special user in your organization, then l suggest that one of the owners of the organization creates a personal access token for the `HUBOT_GITHUB_KEY`. However this will mean that everything that hubot does, will come up as being done by that owner.
+
+The **ideal** setup that in my opinion that works best, is to create a special user called `whatever your hubot` is called. Thenn you make that bot user an owner of your organization, and get that bot user to create a personal access token for the `HUBOT_GITHUB_KEY`. So in the audit log, every event will appear as being done by your bot user. This means, as you give you bot user more abilities, you can properly monitor what exactly it is doing.
+
 
 
 ## Installation
@@ -30,8 +38,8 @@ Then add **hubot-github** to your `external-scripts.json`:
 ## Configuration
 
 ```
-HUBOT_GITHUB_KEY   - Github Application Key
-HUBOT_GITHUB_ORG  - Github Organization Name
+HUBOT_GITHUB_KEY   - Github Application Key (personal access token)
+HUBOT_GITHUB_ORG  - Github Organization Name (the one in the url)
 HUBOT_SLACK_ADMIN - Slack Admins who can use certain admin commands
 ```
 
@@ -56,7 +64,6 @@ Organization commands, hence gho (GitHub Organization)
 `hubot`:
 
 * `gho` - returns a summary of your organization
-* `gho list (members|users)` - returns a list of the members of your organization
-* `gho list teams` - returns a list of all teams within your organization
-* `gho list (repos|repositories)` - returns a list of all repos within your organization
-* `gho check (member|user) <github-username>` - tells you if the github user is a member of your organizaton
+* `gho list (teams|repos|members)` - returns a list of the members, teams or repos in your organization
+* `gho create team "<team name>"` - creates a team with the following name
+* `gho create repo "<repo name>":"<repo desc>":"<private | public>" - creates a repo with the following name, description and type (public or private)
