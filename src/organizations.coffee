@@ -51,21 +51,6 @@ getOrgMember = (msg, username, orgName) ->
 
 
 
-# org = {
-#   isAdmin: (user) ->
-#     user.id.toString() in admins
-
-#   # remove: {
-#   #   member: (msg, name, from) ->
-#   #   members: (msg, names, from) ->
-#   #   team: (msg, name) ->
-#   #   teams: (msg, name) ->
-#   #   repo: (msg, name, from) ->
-#   #   repos: (msg, names, from) ->
-#   # }
-# }
-
-
 module.exports = (robot) ->
 
   ensureConfig console.log
@@ -76,6 +61,8 @@ module.exports = (robot) ->
   robot.respond /gho$/i, (msg) ->
     org.summary msg
 
+  robot.respond /gho list (teams|repos|members)\s?(?:["'](.*?)['"])?/i, (msg) ->
+    org.list[msg.match[1]] msg, msg.match[2]
 
   robot.respond /gho create (team|repo) ["'](.*?)['"](?:[:])?(?:["'](.*?)['"])?(?:[:])?(?:["'](.*?)['"])?/i, (msg) ->
     unless isAdmin msg.message.user
@@ -83,6 +70,8 @@ module.exports = (robot) ->
     else
       org.create[msg.match[1]] msg, msg.match[2], msg.match[3], msg.match[4]
 
-
-  robot.respond /gho list (teams|repos|members)\s?(?:["'](.*?)['"])?/i, (msg) ->
-    org.list[msg.match[1]] msg, msg.match[2]
+  robot.respond /gho add (repos|members) ["'](.*?)['"](?: to team) ["'](.*?)['"]/i, (msg) ->
+    unless isAdmin msg.message.user
+      msg.reply "Sorry, only admins can use 'add' commands"
+    else
+      org.add[msg.match[1]] msg, msg.match[2], msg.match[3]

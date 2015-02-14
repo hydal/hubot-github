@@ -67,3 +67,4 @@ Organization commands, hence gho (GitHub Organization)
 * `gho list (teams|repos|members)` - returns a list of the members, teams or repos in your organization
 * `gho create team "<team name>"` - creates a team with the following name
 * `gho create repo "<repo name>":"<repo desc>":"<private | public>"` - creates a repo with the following name, description and type (public or private)
+* `gho add (members|repos) to team "<team name>"` - adds a comma seperated list of members or repos to a given team
