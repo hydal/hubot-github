@@ -13,7 +13,7 @@ Please contribute, espically on things like:
 
 If you just wanted to use this hubot-script without having to create a special user in your organization, then l suggest that one of the owners of the organization creates a personal access token for the `HUBOT_GITHUB_KEY`. However this will mean that everything that hubot does, will come up as being done by that owner.
 
-The **ideal** setup that in my opinion that works best, is to create a special user called `whatever your hubot` is called. Thenn you make that bot user an owner of your organization, and get that bot user to create a personal access token for the `HUBOT_GITHUB_KEY`. So in the audit log, every event will appear as being done by your bot user. This means, as you give you bot user more abilities, you can properly monitor what exactly it is doing.
+The **ideal** setup in my opinion that works best, is to create a special user called `whatever your hubot` is called. Thenn you make that bot user an owner of your organization, and get that bot user to create a personal access token for the `HUBOT_GITHUB_KEY`. So in the audit log, every event will appear as being done by your bot user. This means, as you give you bot user more abilities, you can properly monitor what exactly it is doing.
 
 
 
