@@ -10,7 +10,13 @@
 #   HUBOT_SLACK_ADMIN - Userid of slack admins who can use these commands
 #
 # Commands:
-#   hubot gho list members|users - returns a list of all of the users and members of your org
+#   hubot gho - returns a summary of your organization
+#   hubot gho list (teams|repos|members) - returns a list of members, teams or repos in your organization
+#   hubot gho create team "<team name>" - creates a team with the following name
+#   hubot gho create repo "<repo name>":"<repo desc>":<private | public>" - creates a repo with the following name, description and type (private or public)
+#   hubot gho add (members|repos) to team "<team name>" - adds a comma separated list of members or repos to a given team
+#   hubot gho remove (repos|members) from team "<team name>" - removes the repos or members from the given team
+#   hubot gho delete team "<team name>" - deletes the given team from your organization
 #
 # Author:
 #   Ollie Jennings <ollie@olliejennings.co.uk>
