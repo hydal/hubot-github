@@ -84,7 +84,29 @@ org = {
                 msg.send "The member: #{member} was added to the team: #{team.name}" unless err
   }
 
-  remove: {}
+  remove: {
+    repos: (msg, repoList, teamName) ->
+      console.log repoList, teamName
+      github.orgs.getTeams org: organization, per_page: 100, (err, res) ->
+        msg.reply "There was an error removing the repos: #{repoList} from the team: #{teamName}" if err or res.length == 0
+        for team in res
+          if team.name == teamName
+            for repository in repoList.split ','
+              github.orgs.deleteTeamRepo id: team.id, user: organization, repo: repository, (err, res) ->
+                msg.reply "The repo: #{repository} could not be removed from the team: #{teamName}" if err
+                msg.send "The repo: #{repository} was removed from the team: #{teamName}" unless err
+
+    members: (msg, memberList, teamName) ->
+      github.orgs.getTeams org: organization, per_page: 100, (err, res) ->
+        msg.reply "There was an error removing the members: #{memberList} from the team: #{teamName}" if err or res.length == 0
+        for team in res
+          if team.name == teamName
+            for member in memberList.split ','
+              github.orgs.deleteTeamMember id: team.id, user: member, (err, res) ->
+                msg.reply "The member: #{member} could not be removed from the team: #{teamName}" if err
+                msg.send "The member: #{member} was removed from the team: #{teamName}" unless err
+
+  }
 
   delete: {}
 

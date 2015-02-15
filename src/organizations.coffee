@@ -75,3 +75,9 @@ module.exports = (robot) ->
       msg.reply "Sorry, only admins can use 'add' commands"
     else
       org.add[msg.match[1]] msg, msg.match[2], msg.match[3]
+
+  robot.respond /gho remove (repos|members) ["'](.*?)['"](?: from) (team|everything)\s?(?:["'](.*?)['"])?/i, (msg) ->
+    unless isAdmin msg.message.user
+      msg.reply "Sorry, only admins can use 'remove' commands"
+    else
+      org.remove[msg.match[1]] msg, msg.match[2], msg.match[4]
