@@ -11,10 +11,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/mmtus/hubot-github.git"
+    "url": "git://github.com/boxxenapp/hubot-github.git"
   },
   "bugs": {
-    "url": "https://github.com/mmtus/hubot-github/issues"
+    "url": "https://github.com/boxxenapp/hubot-github/issues"
   },
   "dependencies": {
     "coffee-script": "~1.6",
