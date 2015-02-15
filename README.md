@@ -1,9 +1,6 @@
 # Hubot Github
 
-`Please don't install this yet, it's still a work in progress, and this package is not on NPM yet.`
-
 Give Hubot the ability to take control of Github 
-
 
 Please contribute, espically on things like:
 
