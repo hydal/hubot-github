@@ -108,7 +108,16 @@ org = {
 
   }
 
-  delete: {}
+  delete: {
+    team: (msg, teamName) ->
+      github.orgs.getTeams org: organization, per_page: 100, (err, res) ->
+        msg.reply "There was an error deleteing the team: #{teamName}" if err or res.length == 0
+        for team in res
+          if team.name == teamName
+            github.orgs.deleteTeam id: team.id, (err, res) ->
+              msg.reply "The team: #{teamName} could not be deleted" if err
+              msg.send "The team: #{teamName} was successfully deleted" unless err
+  }
 
 }
 

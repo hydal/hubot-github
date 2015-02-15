@@ -68,3 +68,5 @@ Organization commands, hence gho (GitHub Organization)
 * `gho create team "<team name>"` - creates a team with the following name
 * `gho create repo "<repo name>":"<repo desc>":"<private | public>"` - creates a repo with the following name, description and type (public or private)
 * `gho add (members|repos) to team "<team name>"` - adds a comma seperated list of members or repos to a given team
+* `gho remove (repos|members) from team "<team name>"` - removes the repos or members from the given team
+* `gho delete team "<team name>"` - deletes the team from your organization
