@@ -19,13 +19,6 @@ org = require './libs/org'
 admins = []
 
 
-# TODO - ideal commands
-# - createThin layer for parsing commands
-# - add (members|repos) to (team|organization)
-# - move (member|members|repos|repo) (to|from) (team) to (team)
-# - remove (member|team) from (team|organization)
-
-
 
 ##############################
 # API Methods
@@ -81,3 +74,9 @@ module.exports = (robot) ->
       msg.reply "Sorry, only admins can use 'remove' commands"
     else
       org.remove[msg.match[1]] msg, msg.match[2], msg.match[4]
+
+  robot.respond /gho delete (team) ["'](.*?)['"]/i, (msg) ->
+    unless isAdmin msg.message.user
+      msg.reply "Sorry, only admins can use 'delete' commands"
+    else
+      org.delete[msg.match[1]] msg, msg.match[2]
