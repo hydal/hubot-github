@@ -1,4 +1,4 @@
- # Description:
+# Description:
 #   Allow Hubot to manage your github organization members and teams
 #
 # Dependencies:
