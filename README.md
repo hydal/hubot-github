@@ -4,7 +4,9 @@
 [![Dependency Status](https://david-dm.org/boxxenapp/hubot-github.svg)](https://david-dm.org/boxxenapp/hubot-github)
 [![Code Climate](https://codeclimate.com/github/boxxenapp/hubot-github/badges/gpa.svg)](https://codeclimate.com/github/boxxenapp/hubot-github)
 
-Give Hubot the ability to take control of Github - `Please not this only works on slack right now.` 
+Give Hubot the ability to take control of Github
+
+`Please not this only works on slack right now.` 
 
 Please contribute, espically on things like:
 
