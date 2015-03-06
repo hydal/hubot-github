@@ -60,29 +60,60 @@ module.exports = (robot) ->
   robot.respond /gho$/i, (msg) ->
     org.summary msg
 
-  robot.respond /gho list (teams|repos|members)\s?(?:["'](.*?)['"])?/i, (msg) ->
+  robot.respond /gho list (teams|members)|(?:(repos)(?:[\/])?(public|private)?)/i, (msg) ->
     org.list[msg.match[1]] msg, msg.match[2]
 
-  robot.respond /gho create (team|repo) ["'](.*?)['"](?:[:])?(?:["'](.*?)['"])?(?:[:])?(?:["'](.*?)['"])?/i, (msg) ->
-    unless isAdmin msg.message.user
-      msg.reply "Sorry, only admins can use 'create' commands"
-    else
-      org.create[msg.match[1]] msg, msg.match[2], msg.match[3], msg.match[4]
 
-  robot.respond /gho add (repos|members) ["'](.*?)['"](?: to team) ["'](.*?)['"]/i, (msg) ->
+  robot.respond /gho create (team|repo) (\w.+)/i, (msg) ->
     unless isAdmin msg.message.user
-      msg.reply "Sorry, only admins can use 'add' commands"
+      msg.reply "Only admins can use `create` commands"
     else
-      org.add[msg.match[1]] msg, msg.match[2], msg.match[3]
+      msg.send "done"
 
-  robot.respond /gho remove (repos|members) ["'](.*?)['"](?: from) (team|everything)\s?(?:["'](.*?)['"])?/i, (msg) ->
-    unless isAdmin msg.message.user
-      msg.reply "Sorry, only admins can use 'remove' commands"
-    else
-      org.remove[msg.match[1]] msg, msg.match[2], msg.match[4]
 
-  robot.respond /gho delete (team) ["'](.*?)['"]/i, (msg) ->
+  # robot.respond /gho create (team|repo) ["'](.*?)['"](?:[:])?(?:["'](.*?)['"])?(?:[:])?(?:["'](.*?)['"])?/i, (msg) ->
+  #   unless isAdmin msg.message.user
+  #     msg.reply "Sorry, only admins can use 'create' commands"
+  #   else
+  #     org.create[msg.match[1]] msg, msg.match[2], msg.match[3], msg.match[4]
+
+
+
+  robot.respond /gho add (members|repos) (\w.+) to team (\w.+)/i, (msg) ->
     unless isAdmin msg.message.user
-      msg.reply "Sorry, only admins can use 'delete' commands"
+      msg.reply "Only admins can use `add` commands"
     else
-      org.delete[msg.match[1]] msg, msg.match[2]
+      msg.send "done"
+
+  # robot.respond /gho add (repos|members) ["'](.*?)['"](?: to team) ["'](.*?)['"]/i, (msg) ->
+  #   unless isAdmin msg.message.user
+  #     msg.reply "Sorry, only admins can use 'add' commands"
+  #   else
+  #     org.add[msg.match[1]] msg, msg.match[2], msg.match[3]
+
+
+
+  robot.respond /gho remove (members|repos) (\w.+) from team (\w.+)/i, (msg) ->
+    unless isAdmin msg.message.user
+      msg.reply "Only admins can use `remove` commands"
+    else
+      msg.send "done"
+
+  # robot.respond /gho remove (repos|members) ["'](.*?)['"](?: from) (team|everything)\s?(?:["'](.*?)['"])?/i, (msg) ->
+  #   unless isAdmin msg.message.user
+  #     msg.reply "Sorry, only admins can use 'remove' commands"
+  #   else
+  #     org.remove[msg.match[1]] msg, msg.match[2], msg.match[4]
+
+
+  robot.respond /gho delete team (\w.+)/, (msg) ->
+    unless isAdmin msg.message.user
+      msg.reply "Only admins can use the `delete` commands"
+    else
+      msg.send "done"
+
+#   robot.respond /gho delete (team) ["'](.*?)['"]/i, (msg) ->
+#     unless isAdmin msg.message.user
+#       msg.reply "Sorry, only admins can use 'delete' commands"
+#     else
+#       org.delete[msg.match[1]] msg, msg.match[2]
