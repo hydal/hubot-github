@@ -65,3 +65,8 @@ hubot:
 - gho remove (members|repos) from team <team name> - removes comma list of members or repos from the given team
 - gho delete team <team name> - deletes the given team from your org (doesn't delete the repos or members from your org)
 ```
+
+
+## Changelog
+
+**2015-03-09**: [Release Notes](http://github.com/boxxenapp/hubot-github/releases/tag/v0.2.0)
