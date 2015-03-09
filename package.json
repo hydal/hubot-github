@@ -1,11 +1,12 @@
 {
   "name": "hubot-github",
   "description": "Giving Hubot the ability to be a vital member of your github organization",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "author": "Ollie Jennings <ollie@olliejennings.co.uk>",
   "license": "MIT",
   "keywords": [
     "hubot",
+    "github",
     "hubot-scripts",
     "hubot-github"
   ],
