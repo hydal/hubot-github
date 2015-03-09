@@ -1,4 +1,5 @@
 GitHubAPI = require 'github'
+_ = require 'lodash'
 
 github = new GitHubAPI version: "3.0.0", debug: true, headers: Accept: "application/vnd.github.moondragon+json"
 
@@ -55,8 +56,8 @@ org = {
         msg.reply "There was an error and the team: `#{teamName}` was not created" if err
         msg.send "The team: `#{team.name}` was successfully created" unless err
 
-    repo: (msg, repoName, repoDesc, repoStatus) ->
-      github.repos.createFromOrg org: organization, name: repoName, description: repoDesc, private: repoStatus == "private", (err, repo) ->
+    repo: (msg, repoName, repoStatus) ->
+      github.repos.createFromOrg org: organization, name: repoName, private: repoStatus == "private", (err, repo) ->
         msg.reply "There was an error, and the repo: `#{repoName}` was not created" if err
         msg.send "The private repo: `#{repo.name}` was created" unless err or !repo.private
         msg.send "The public repo: `#{repo.name}` was created" unless err or repo.private
@@ -65,58 +66,58 @@ org = {
   add: {
     repos: (msg, repoList, teamName) ->
       github.orgs.getTeams org: organization, per_page: 100, (err, res) ->
-        msg.reply "There was an error adding the repos: #{repoList} to the team: #{teamName}" if err or res.length == 0
-        for team in res
-          if team.name == teamName
-            for repository in repoList.split ','
-              github.orgs.addTeamRepo id: team.id, user: organization, repo: repository, (err, res) ->
-                msg.reply "The repo: `#{repository}` could not be added to the team: #{team.name}" if err
-                msg.send "The repo: `#{repository}` was added to the team: #{team.name}" unless err
+        return msg.reply "There was an error adding the repos: #{repoList} to the team: #{teamName}" if err or res.length == 0
+        team = _.find(res, { name: teamName })
+        if team
+          for repository in repoList.split ','
+            github.orgs.addTeamRepo id: team.id, user: organization, repo: repository, (err, res) ->
+              msg.reply "The repo: `#{repository}` could not be added to the team: #{team.name}" if err
+              msg.send "The repo: `#{repository}` was added to the team: #{team.name}" unless err
 
     members: (msg, memberList, teamName) ->
       github.orgs.getTeams org: organization, per_page: 100, (err, res) ->
-        msg.reply "There was an error adding the members: #{memberList} to the team: #{teamName}" if err or res.length == 0
-        for team in res
-          if team.name == teamName
-            for member in memberList.split ','
-              github.orgs.addTeamMember id: team.id, user: member, (err, res) ->
-                msg.reply "The member: `#{member}` could not be added to the team: #{team.name}" if err
-                msg.send "The member: `#{member}` was added to the team: #{team.name}" unless err
+        return msg.reply "There was an error adding the members: #{memberList} to the team: #{teamName}" if err or res.length == 0
+        team = _.find(res, { name: teamName })
+        if team
+          for member in memberList.split ','
+            github.orgs.addTeamMember id: team.id, user: member, (err, res) ->
+              msg.reply "The member: `#{member}` could not be added to the team: #{team.name}" if err
+              msg.send "The member: `#{member}` was added to the team: #{team.name}" unless err
   }
 
   remove: {
     repos: (msg, repoList, teamName) ->
       console.log repoList, teamName
       github.orgs.getTeams org: organization, per_page: 100, (err, res) ->
-        msg.reply "There was an error removing the repos: #{repoList} from the team: #{teamName}" if err or res.length == 0
-        for team in res
-          if team.name == teamName
-            for repository in repoList.split ','
-              github.orgs.deleteTeamRepo id: team.id, user: organization, repo: repository, (err, res) ->
-                msg.reply "The repo: `#{repository}` could not be removed from the team: #{teamName}" if err
-                msg.send "The repo: `#{repository}` was removed from the team: #{teamName}" unless err
+        return msg.reply "There was an error removing the repos: #{repoList} from the team: #{teamName}" if err or res.length == 0
+        team = _.find(res, { name: teamName })
+        if team
+          for repository in repoList.split ','
+            github.orgs.deleteTeamRepo id: team.id, user: organization, repo: repository, (err, res) ->
+              msg.reply "The repo: `#{repository}` could not be removed from the team: #{teamName}" if err
+              msg.send "The repo: `#{repository}` was removed from the team: #{teamName}" unless err
 
     members: (msg, memberList, teamName) ->
       github.orgs.getTeams org: organization, per_page: 100, (err, res) ->
-        msg.reply "There was an error removing the members: #{memberList} from the team: #{teamName}" if err or res.length == 0
-        for team in res
-          if team.name == teamName
-            for member in memberList.split ','
-              github.orgs.deleteTeamMember id: team.id, user: member, (err, res) ->
-                msg.reply "The member: `#{member}` could not be removed from the team: #{teamName}" if err
-                msg.send "The member: `#{member}` was removed from the team: #{teamName}" unless err
+        return msg.reply "There was an error removing the members: #{memberList} from the team: #{teamName}" if err or res.length == 0
+        team = _.find(res, { name: teamName })
+        if team
+          for member in memberList.split ','
+            github.orgs.deleteTeamMember id: team.id, user: member, (err, res) ->
+              msg.reply "The member: `#{member}` could not be removed from the team: #{teamName}" if err
+              msg.send "The member: `#{member}` was removed from the team: #{teamName}" unless err
 
   }
 
   delete: {
     team: (msg, teamName) ->
       github.orgs.getTeams org: organization, per_page: 100, (err, res) ->
-        msg.reply "There was an error deleteing the team: #{teamName}" if err or res.length == 0
-        for team in res
-          if team.name == teamName
-            github.orgs.deleteTeam id: team.id, (err, res) ->
-              msg.reply "The team: `#{teamName}` could not be deleted" if err
-              msg.send "The team: `#{teamName}` was successfully deleted" unless err
+        return msg.reply "There was an error deleteing the team: #{teamName}" if err or res.length == 0
+        team = _.find(res, { name: teamName })
+        if team
+          github.orgs.deleteTeam id: team.id, (err, res) ->
+            msg.reply "The team: `#{teamName}` could not be deleted" if err
+            msg.send "The team: `#{teamName}` was successfully deleted" unless err
   }
 
 }
